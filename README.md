@@ -1,9 +1,11 @@
 # Auto-Slur Melismas
 A plugin for MuseScore 3 & 4 that automatically slurs lyrics melismas (text sustained over more than one note)
 
+### [Download](https://github.com/XiaoMigros/auto-slur-melismas/archive/main.zip)
+
 ## Features
-- Apply the plugin to a selection or the whole score
 - The plugin accounts for ties, and won't add slurs where it's not needed
+- Choose when long melismas should no longer receive slurs (the default is 5 notes)
 - Compatible with MuseScore 3.3 and later
 
 ## Installation

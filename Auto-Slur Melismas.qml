@@ -5,13 +5,17 @@ MuseScore {
 	menuPath: "Plugins.Auto-Slur Melismas"
 	description: qsTr("This plugin automatically add slurs to vocal melismas") + "\n" +
 		qsTr("Compatible with MuseScore 3.3 and later.")
-	version: "1.0"
+	version: "1.1"
 	requiresScore: true
+	
+	property int maximumMelismaLength: 5
+	//the plugin won't add slurs to melismas longer than the above value
+	//measured in number of notes the melisma spans
 
-	Component.onCompleted : {
+	Component.onCompleted: {
 		if (mscoreMajorVersion >= 4) {
-			title = qsTr("Auto-Slur Melismas") ;
-			categoryCode = "notes-rests";
+			title = qsTr("Auto-Slur Melismas")
+			categoryCode = "notes-rests"
 		} //if
 	}//Component
 	
@@ -41,7 +45,7 @@ MuseScore {
 									if (cursor.element.lyrics[l].lyricTicks.ticks >= cursor.element.duration.ticks) {
 										console.log("lyric has a melisma")
 										var startNote = noteOrRest(cursor.element)
-										
+										var lengthCount = 0
 										var endTick = cursor.tick + cursor.element.lyrics[l].lyricTicks.ticks
 										var needToTie = false
 										while (cursor.tick < endTick) {
@@ -51,12 +55,13 @@ MuseScore {
 												}
 											}
 											cursor.next()
+											lengthCount++
 										}
-										if (needToTie) {
-											console.log("adding slur")
+										if (needToTie && lengthCount < maximumMelismaLength) {
+											console.log("adding slur over " + lengthCount + " notes")
 											changeList.push([startNote, noteOrRest(cursor.element)])
 										} else {
-											console.log("notes are tied. No need to add a slur")
+											console.log(needToTie ? "The melisma exceeds the maximum length for adding slurs." : "All notes are tied. No need to add a slur")
 										}
 									}									
 								}
